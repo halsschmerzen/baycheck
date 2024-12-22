@@ -11,8 +11,7 @@ COPY . .
 
 RUN go build -o baycheck
 
-# Create required directories
-RUN mkdir -p /app/logs /app/config
+# Create directory for logs only
+RUN mkdir -p /app/logs
 
-# Don't define VOLUME here, we'll handle it in docker-compose
 CMD ["./baycheck"]
