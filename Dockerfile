@@ -11,8 +11,7 @@ COPY . .
 
 RUN go build -o baycheck
 
-# Create required directories
-RUN mkdir -p /app/logs /app/config && \
-    touch /app/findings.json /app/config.json
+# Don't create files here, they will be mounted
+RUN mkdir -p /app/logs
 
 CMD ["./baycheck"]

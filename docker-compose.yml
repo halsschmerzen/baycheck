@@ -5,9 +5,15 @@ services:
     container_name: baycheck_scraper
     build: .
     volumes:
-      - ./findings.json:/app/findings.json
-      - ./config.json:/app/config.json
-      - ./logs:/app/logs
+      - type: bind
+        source: ./findings.json
+        target: /app/findings.json
+      - type: bind
+        source: ./config.json
+        target: /app/config.json
+      - type: bind
+        source: ./logs
+        target: /app/logs
     environment:
       - TZ=Europe/Berlin
     restart: always
