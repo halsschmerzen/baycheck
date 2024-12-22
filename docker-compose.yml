@@ -4,9 +4,9 @@ services:
   scraper:
     build: .
     volumes:
-      - ./findings.json:/app/findings.json:rw
-      - ./config:/app/config:rw
-      - ./logs:/app/logs:rw
+      - ./findings.json:/app/findings.json
+      - ./config.json:/app/config.json
+      - ./logs:/app/logs
     environment:
       - TZ=Europe/Berlin
     restart: always
