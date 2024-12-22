@@ -1,12 +1,12 @@
 version: '3'
+
 services:
   scraper:
     build: .
     volumes:
-      - ./logs:/app/logs
-      - ./config.json:/app/config.json
-      - ./config.template.json:/app/config.template.json
       - ./findings.json:/app/findings.json
+      - ./config.json:/app/config.json
+      - ./logs:/app/logs
     environment:
       - TZ=Europe/Berlin
     restart: always
