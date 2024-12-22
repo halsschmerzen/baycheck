@@ -11,7 +11,10 @@ COPY . .
 
 RUN go build -o baycheck
 
-# Don't create files here, they will be mounted
-RUN mkdir -p /app/logs
+# Create required directories and initial config if needed
+RUN mkdir -p /app/logs && \
+    cp config.template.json config.json
+
+ENV DOCKER_CONTAINER=true
 
 CMD ["./baycheck"]

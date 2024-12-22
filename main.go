@@ -307,28 +307,39 @@ func main() {
 	var config Config
 	config.CheckInterval = 300 // Default check interval
 
+	// Check if running in Docker
+	_, inDocker := os.LookupEnv("DOCKER_CONTAINER")
+
 	// Try to load existing config
 	if existingConfig, err := loadConfig(); err == nil {
-		fmt.Println("Found existing configuration.")
-		fmt.Print("Do you want to (1) use existing config, (2) add new searches, or (3) start fresh? [1/2/3]: ")
-		reader := bufio.NewReader(os.Stdin)
-		choice, _ := reader.ReadString('\n')
-		choice = strings.TrimSpace(choice)
+		if inDocker {
+			// In Docker, always use existing config
+			config = *existingConfig
+			fmt.Println("Running in Docker mode, using existing configuration")
+		} else {
+			fmt.Println("Found existing configuration.")
+			fmt.Print("Do you want to (1) use existing config, (2) add new searches, or (3) start fresh? [1/2/3]: ")
+			reader := bufio.NewReader(os.Stdin)
+			choice, _ := reader.ReadString('\n')
+			choice = strings.TrimSpace(choice)
 
-		switch choice {
-		case "1":
-			config = *existingConfig
-		case "2":
-			config = *existingConfig
-			fmt.Println("Adding new searches to existing configuration...")
-		case "3":
-			fmt.Println("Starting with fresh configuration...")
-		default:
-			log.Fatal("Invalid choice")
+			switch choice {
+			case "1":
+				config = *existingConfig
+			case "2":
+				config = *existingConfig
+				fmt.Println("Adding new searches to existing configuration...")
+			case "3":
+				fmt.Println("Starting with fresh configuration...")
+			default:
+				log.Fatal("Invalid choice")
+			}
 		}
+	} else if inDocker {
+		log.Fatal("No config.json found and running in Docker. Please provide a config file.")
 	}
 
-	if len(config.Searches) == 0 {
+	if len(config.Searches) == 0 && !inDocker {
 		fmt.Print("How many items do you want to search for? ")
 		reader := bufio.NewReader(os.Stdin)
 		input, _ := reader.ReadString('\n')
