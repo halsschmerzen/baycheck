@@ -1,0 +1,8 @@
+version: '3'
+services:
+  scraper:
+    build: .
+    volumes:
+      - ./findings.json:/app/findings.json
+      - ./config.json:/app/config.json
+    restart: always

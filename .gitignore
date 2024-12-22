@@ -1,0 +1,13 @@
+baycheck
+ebayscraper
+logs/
+findings.json
+config.json
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+go.work
